@@ -137,6 +137,15 @@ class ProcessHandler():
     def get_processes(self):
         return self.pg.generated_processes
 
+    def print_statistics(self):
+        mean_cycles = self.get_mean_cpu_cycles()
+        mean_footprint = self.get_mean_footprint_kb()
+
+        print()
+        print("--- Mean CPU cycles: {}".format(mean_cycles))
+        print("--- Mean Memory Footprint: {} KB".format(mean_footprint))
+        print()
+
     def start(self):
         self._generate_processes()
 
@@ -149,9 +158,15 @@ def main():
     else:
         num_processes = int(argv[1])
 
+    if (num_processes <= 0):
+        print("ERROR: Invalid number of processes provided.")
+        exit(1)
+
     ph = ProcessHandler(num_processes)
 
     ph.start()
+
+    ph.print_statistics()
 
 
 if __name__ == "__main__":
